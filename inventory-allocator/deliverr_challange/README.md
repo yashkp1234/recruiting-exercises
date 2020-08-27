@@ -61,5 +61,5 @@ Let W represent the number of warehouses, let I represent items in an order
 3. Loop through all warehouses, output any shipments they have processed and append them to a list representing final shipment of the order
    - Time: O(W)
 
-Total Time = O(W) + O(2WI) + O(W) = O(2WI + 2W) = O(WI)
+Total Time = O(W) + O(2WI) + O(W) = O(2WI + 2W) = O(WI)<br/>
 **Thus, the overall implementation time is O(WI)**
