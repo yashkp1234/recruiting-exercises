@@ -11,18 +11,9 @@ class InventoryAllocator(object):
 
     """
 
-    def __init__(self, order: Inventory_Dist,
-                 warehouse_dicts: Input_Warehouse_List):
-        """The constructor for InventoryAllocator class.
-
-        Parameters:
-           order: The order to be completed.
-           warhouse_dicts: A list of warehouses and their inventories 
-
-        """
-        self.__order = order
+    def __init__(self):
+        """The constructor for InventoryAllocator class."""
         self.__warehouse_list = []
-        self.__set_warehouse_list(warehouse_dicts)
 
     def __set_warehouse_list(self, warehouse_dict_list: Input_Warehouse_List):
         """Creates a Warehouse object for each Warhouse_Dict in the list
@@ -70,11 +61,19 @@ class InventoryAllocator(object):
                 if quantity_left <= 0:
                     break
 
-    def allocate_inventory(self) -> Shipment:
-        """Returns Shipment of optimally allocated inventory if possible"""
+    def allocate_inventory(self, order: Inventory_Dist,
+                           warehouse_dicts: Input_Warehouse_List) -> Shipment:
+        """Returns Shipment of optimally allocated inventory
+
+            Parameters:
+            order: The order to be completed.
+            warhouse_dicts: A list of warehouses and their inventories
+
+        """
+        self.__set_warehouse_list(warehouse_dicts)
 
         # Process all items in order into warehouse shipments
-        for item, quantity in self.__order.items():
+        for item, quantity in order.items():
             if quantity == 0:
                 # Skip orders of 0
                 continue

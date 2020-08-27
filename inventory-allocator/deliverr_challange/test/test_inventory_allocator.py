@@ -1,5 +1,5 @@
 import unittest
-from ..src.inventory_allocator import InventoryAllocator
+from src.inventory_allocator import InventoryAllocator
 
 
 class TestInventoryAllocator(unittest.TestCase):
@@ -9,17 +9,18 @@ class TestInventoryAllocator(unittest.TestCase):
         order = {"apple": 1}
         warehouses = [{"name": "owd", "inventory": {"apple": 1}}]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [{"owd": {"apple": 1}}]
         self.assertEqual(allocation, expected_result)
 
     def test_exact_match__of_multiple_items_at_single_warehouse(self):
         order = {"apple": 1, "beans": 7, "pineapple": 8}
         warehouses = [
-            {"name": "owd", "inventory": {"apple": 1, "beans": 7, "pineapple": 8}}
+            {"name": "owd", "inventory": {"apple": 1, "beans": 7,
+                                          "pineapple": 8}}
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [{"owd": {"apple": 1, "beans": 7, "pineapple": 8}}]
         self.assertEqual(allocation, expected_result)
 
@@ -27,9 +28,9 @@ class TestInventoryAllocator(unittest.TestCase):
         order = {"apple": 5, "orange": 1}
         warehouses = [{"name": "owd", "inventory": {"apple": 10, "orange": 2}}]
 
-        allocator = InventoryAllocator(order, warehouses)
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [{"owd": {"apple": 5, "orange": 1}}]
-        self.assertEqual(allocator.allocate_inventory(), expected_result)
+        self.assertEqual(allocation, expected_result)
 
     def test_exact_match_in_various_warehouses(self):
         order = {"apple": 1, "beans": 7, "pineapple": 8}
@@ -39,7 +40,7 @@ class TestInventoryAllocator(unittest.TestCase):
             {"name": "bobs", "inventory": {"pineapple": 8}},
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [
             {"owd": {"apple": 1}},
             {"johns": {"beans": 7}},
@@ -55,7 +56,7 @@ class TestInventoryAllocator(unittest.TestCase):
             {"name": "bobs", "inventory": {"apples": 8}},
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [
             {"owd": {"apple": 5}},
         ]
@@ -66,12 +67,14 @@ class TestInventoryAllocator(unittest.TestCase):
                  "pineapple": 8, "cheese": 10, "pasta": 9}
         warehouses = [
             {"name": "owd", "inventory": {"apple": 7, "cheese": 10}},
-            {"name": "johns", "inventory": {"beans": 7, "pasta": 9, "cheese": 10}},
+            {"name": "johns", "inventory": {"beans": 7, "pasta": 9,
+                                            "cheese": 10}},
             {"name": "bobs", "inventory": {"apple": 7, "beans": 7,
-                                           "cheese": 10, "pineapple": 8, "pasta": 9}},
+                                           "cheese": 10, "pineapple": 8,
+                                           "pasta": 9}},
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [
             {"owd": {"apple": 7, "cheese": 10}},
             {"johns": {"beans": 7, "pasta": 9}},
@@ -82,14 +85,16 @@ class TestInventoryAllocator(unittest.TestCase):
     def test_optimal_allocation_over_warehouses_no_exact_match(self):
         order = {"apple": 9, "cheese": 60, "pasta": 18}
         warehouses = [
-            {"name": "owd", "inventory": {"apple": 7,
-                                          "beans": 2, "cheese": 10, "pineapple": 8}},
-            {"name": "johns", "inventory": {"beans": 7, "pasta": 9, "cheese": 10}},
+            {"name": "owd", "inventory": {"apple": 7, "beans": 2,
+                                          "cheese": 10, "pineapple": 8}},
+            {"name": "johns", "inventory": {"beans": 7, "pasta": 9,
+                                            "cheese": 10}},
             {"name": "bobs", "inventory": {"apple": 2, "beans": 7,
-                                           "cheese": 40, "pineapple": 8, "pasta": 9}},
+                                           "cheese": 40, "pineapple": 8,
+                                           "pasta": 9}},
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [
             {"owd": {"apple": 7, "cheese": 10}},
             {"johns": {"pasta": 9, "cheese": 10}},
@@ -101,12 +106,14 @@ class TestInventoryAllocator(unittest.TestCase):
         order = {"cheese": 30}
         warehouses = [
             {"name": "owd", "inventory": {"apple": 7, "cheese": 10}},
-            {"name": "johns", "inventory": {"beans": 7, "pasta": 9, "cheese": 10}},
+            {"name": "johns", "inventory": {"beans": 7, "pasta": 9,
+                                            "cheese": 10}},
             {"name": "bobs", "inventory": {"apple": 7, "beans": 7,
-                                           "cheese": 30, "pineapple": 8, "pasta": 9}},
+                                           "cheese": 30, "pineapple": 8,
+                                           "pasta": 9}},
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [{"bobs": {"cheese": 30}}]
         self.assertEqual(allocation, expected_result)
 
@@ -114,13 +121,16 @@ class TestInventoryAllocator(unittest.TestCase):
         order = {"apple": 9, "beans": 13,
                  "pineapple": 8, "cheese": 30, "pasta": 18}
         warehouses = [
-            {"name": "owd", "inventory": {"apple": 7, "cheese": 10, "pineapple": 8}},
-            {"name": "johns", "inventory": {"beans": 7, "pasta": 9, "cheese": 10}},
+            {"name": "owd", "inventory": {"apple": 7, "cheese": 10,
+                                          "pineapple": 8}},
+            {"name": "johns", "inventory": {"beans": 7, "pasta": 9,
+                                            "cheese": 10}},
             {"name": "bobs", "inventory": {"apple": 7, "beans": 7,
-                                           "cheese": 40, "pineapple": 8, "pasta": 9}},
+                                           "cheese": 40, "pineapple": 8,
+                                           "pasta": 9}},
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [
             {"owd": {"apple": 7, "pineapple": 8}},
             {"johns": {"beans": 7, "pasta": 9}},
@@ -133,13 +143,16 @@ class TestInventoryAllocator(unittest.TestCase):
                  "pineapple": 16, "cheese": 60, "pasta": 18}
         warehouses = [
             {"name": "owd", "inventory": {"apple": 7,
-                                          "beans": 2, "cheese": 10, "pineapple": 8}},
-            {"name": "johns", "inventory": {"beans": 7, "pasta": 9, "cheese": 10}},
+                                          "beans": 2, "cheese": 10,
+                                          "pineapple": 8}},
+            {"name": "johns", "inventory": {"beans": 7, "pasta": 9,
+                                            "cheese": 10}},
             {"name": "bobs", "inventory": {"apple": 2, "beans": 7,
-                                           "cheese": 40, "pineapple": 8, "pasta": 9}},
+                                           "cheese": 40, "pineapple": 8,
+                                           "pasta": 9}},
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         expected_result = [
             {"owd": {"apple": 7, "beans": 2, "cheese": 10, "pineapple": 8}},
             {"johns": {"beans": 7, "pasta": 9, "cheese": 10}},
@@ -148,13 +161,35 @@ class TestInventoryAllocator(unittest.TestCase):
         ]
         self.assertEqual(allocation, expected_result)
 
-    ################# Test cases where allocation for an item is not possible #################
+    ######## Test cases where allocation for something is not possible ##########
+    def test_order_missing(self):
+        order = {}
+        warehouses = [{"name": "owd", "inventory": {"apple": 1}}]
+
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
+        self.assertEqual(allocation, [])
+
+    def test_warehosues_missing(self):
+        order = {"apple": 1, "chaps": 1}
+        warehouses = []
+
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
+        self.assertEqual(allocation, [])
+
+    def test_both_order_warehouse_missing(self):
+        order = {}
+        warehouses = []
+
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
+        self.assertEqual(allocation, [])
+
     def test_item_missing(self):
         order = {"apple": 1, "chaps": 1}
         warehouses = [{"name": "owd", "inventory": {"apple": 1}}]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
-        self.assertEqual(allocation, [])
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
+        expected_result = [{"owd": {"apple": 1}}]
+        self.assertEqual(allocation, expected_result)
 
     def test_item_missing_multiple_warehouses(self):
         order = {"apple": 1, "pineapple": 6, "cheese": 2}
@@ -162,8 +197,9 @@ class TestInventoryAllocator(unittest.TestCase):
             {"name": "owd", "inventory": {"apple": 5}},
             {"name": "beep", "inventory": {"pineapple": 6}}]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
-        self.assertEqual(allocation, [])
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
+        expected_result = [{"owd": {"apple": 1}}, {"beep": {"pineapple": 6}}]
+        self.assertEqual(allocation, expected_result)
 
     def test_first_item_missing_multiple_warehouses(self):
         order = {"apples": 1, "bapple": 6, "pineapple": 2}
@@ -171,8 +207,9 @@ class TestInventoryAllocator(unittest.TestCase):
             {"name": "owd", "inventory": {"bapple": 5}},
             {"name": "beep", "inventory": {"pineapple": 6}}]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
-        self.assertEqual(allocation, [])
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
+        expected_result = [{"beep": {"pineapple": 2}}]
+        self.assertEqual(allocation, expected_result)
 
     def test_no_inventory_at_warehouse(self):
         order = {"apple": 1}
@@ -180,53 +217,68 @@ class TestInventoryAllocator(unittest.TestCase):
                       {"name": "owds", "inventory": {"apple": 0}},
                       {"name": "owdzz", "inventory": {"apple": 0}}]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         self.assertEqual(allocation, [])
 
     def test_not_enough_inventory_one_warehouse(self):
         order = {"apple": 5, "burito": 5}
         warehouses = [{"name": "owd", "inventory": {"apple": 6, "burito": 4}}]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
-        self.assertEqual(allocation, [])
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
+        expected_result = [{"owd": {"apple": 5}}]
+        self.assertEqual(allocation, expected_result)
 
     def test_not_enough_inventory_multiple_warehouse(self):
         order = {"apple": 10, "burito": 50, "carrot": 10}
         warehouses = [
-            {"name": "owd", "inventory": {"apple": 1, "burito": 4, "carrot": 1}},
-            {"name": "zeep", "inventory": {"apple": 2, "burito": 4, "carrot": 5}},
+            {"name": "owd", "inventory": {"apple": 1, "burito": 4,
+                                          "carrot": 1}},
+            {"name": "zeep", "inventory": {"apple": 2, "burito": 4,
+                                           "carrot": 5}},
             {"name": "zeepa", "inventory": {"apple": 2, "burito": 4}},
-            {"name": "zeepv", "inventory": {"apple": 2, "burito": 20}},
-            {"name": "zeepc", "inventory": {"apple": 2, "burito": 10, "carrot": 1}}
+            {"name": "zeepb", "inventory": {"apple": 2, "burito": 20}},
+            {"name": "zeepc", "inventory": {"apple": 2, "burito": 10,
+                                            "carrot": 1}}
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         self.assertEqual(allocation, [])
 
     def test_not_enough_inventory_random_item_multiple_warehouse(self):
         order = {"apple": 10, "burito": 50, "carrot": 10}
         warehouses = [
-            {"name": "owd", "inventory": {"apple": 1, "burito": 4, "carrot": 1}},
-            {"name": "zeep", "inventory": {"apple": 2, "burito": 4, "carrot": 5}},
+            {"name": "owd", "inventory": {"apple": 1, "burito": 4,
+                                          "carrot": 1}},
+            {"name": "zeep", "inventory": {"apple": 2, "burito": 4,
+                                           "carrot": 5}},
             {"name": "zeepa", "inventory": {"apple": 5, "burito": 4}},
-            {"name": "zeepv", "inventory": {"apple": 2, "burito": 20}},
-            {"name": "zeepc", "inventory": {"apple": 2, "burito": 10, "carrot": 6}}
+            {"name": "zeepb", "inventory": {"apple": 2, "burito": 20}},
+            {"name": "zeepc", "inventory": {"apple": 2, "burito": 10,
+                                            "carrot": 6}}
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
-        self.assertEqual(allocation, [])
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
+        expected_result = [{'owd': {'apple': 1, 'carrot': 1}},
+                           {'zeep': {'apple': 2, 'carrot': 5}},
+                           {'zeepa': {'apple': 5}},
+                           {'zeepb': {'apple': 2}},
+                           {'zeepc': {'carrot': 4}}]
+        self.assertEqual(allocation, expected_result)
 
     def test_order_nothing(self):
         order = {"apple": 0, "burito": 0, "carrot": 0}
         warehouses = [
-            {"name": "owd", "inventory": {"apple": 1, "burito": 4, "carrot": 1}},
-            {"name": "zeep", "inventory": {"apple": 2, "burito": 4, "carrot": 5}},
+            {"name": "owd", "inventory": {"apple": 1, "burito": 4,
+                                          "carrot": 1}},
+            {"name": "zeep", "inventory": {"apple": 2, "burito": 4,
+                                           "carrot": 5}},
             {"name": "zeepa", "inventory": {"apple": 2, "burito": 4}},
             {"name": "zeepv", "inventory": {"apple": 2, "burito": 20}},
-            {"name": "zeepc", "inventory": {"apple": 2, "burito": 10, "carrot": 1}}
+            {"name": "zeepc", "inventory": {"apple": 2, "burito": 10,
+                                            "carrot": 1}}
         ]
 
-        allocation = InventoryAllocator(order, warehouses).allocate_inventory()
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
         self.assertEqual(allocation, [])
 
 
