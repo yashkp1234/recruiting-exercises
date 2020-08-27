@@ -31,17 +31,6 @@ class TestInventoryAllocator(unittest.TestCase):
         expected_result = [{"owd": {"apple": 5, "orange": 1}}]
         self.assertEqual(allocator.allocate_inventory(), expected_result)
 
-    def test_warhouse_storing_inventory_correctly_after_shipment(self):
-        order = {"apple": 5, "orange": 1}
-        warehouses = [
-            {"name": "owd", "inventory": {"apple": 10, "orange": 2}}]
-
-        allocator = InventoryAllocator(order, warehouses)
-        expected_result = [{"owd": {"apple": 5, "orange": 1}}]
-        self.assertEqual(allocator.allocate_inventory(), expected_result)
-        allocator.set_order(order)
-        self.assertEqual(allocator.allocate_inventory(), expected_result)
-
     def test_exact_match_in_various_warehouses(self):
         order = {"apple": 1, "beans": 7, "pineapple": 8}
         warehouses = [
@@ -159,7 +148,7 @@ class TestInventoryAllocator(unittest.TestCase):
         ]
         self.assertEqual(allocation, expected_result)
 
-    ################# Test cases where allocation is not possible #################
+    ################# Test cases where allocation for an item is not possible #################
     def test_item_missing(self):
         order = {"apple": 1, "chaps": 1}
         warehouses = [{"name": "owd", "inventory": {"apple": 1}}]
@@ -184,22 +173,6 @@ class TestInventoryAllocator(unittest.TestCase):
 
         allocation = InventoryAllocator(order, warehouses).allocate_inventory()
         self.assertEqual(allocation, [])
-
-    def test_warehouses_not_changed_on_missing_item(self):
-        order = {"apple": 3, "pineapple": 6, "cheese": 2, "pizza": 12}
-        warehouses = [
-            {"name": "owd", "inventory": {"apple": 5, "pizza": 6}},
-            {"name": "beep", "inventory": {"pineapple": 6, "pizza": 10}}
-        ]
-
-        allocator = InventoryAllocator(order, warehouses)
-        self.assertEqual(allocator.allocate_inventory(), [])
-        order = {"apple": 3, "pineapple": 6, "pizza": 12}
-        allocator.set_order(order)
-        self.assertEqual(allocator.allocate_inventory(), [
-                         {"owd": {"apple": 3, "pizza": 6}},
-                         {"beep": {"pineapple": 6, "pizza": 6}}
-                         ])
 
     def test_no_inventory_at_warehouse(self):
         order = {"apple": 1}

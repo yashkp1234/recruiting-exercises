@@ -1,5 +1,5 @@
 import unittest
-from ..src.warehouse import Warehouse
+from src.warehouse import Warehouse
 
 
 class TestWarehouse(unittest.TestCase):

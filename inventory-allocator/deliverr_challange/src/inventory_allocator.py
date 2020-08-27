@@ -1,5 +1,5 @@
-from .warehouse import Warehouse
 from .typing import Inventory_Dist, Input_Warehouse_List, Shipment
+from .warehouse import Warehouse
 
 
 class InventoryAllocator(object):
@@ -36,73 +36,51 @@ class InventoryAllocator(object):
                 Warehouse(inp_warehouse["name"], inp_warehouse["inventory"])
             )
 
-    def __can_process_shipment_for_item(self, item: str,
-                                        order_quantity: int) -> bool:
-        """Return True if possible to process an shipment for item, False otherwise
-
-        Side Effects:  
-            If it is possible to process an shipment for an item, the order
-            will be processed by all required Warehouses
+    def __process_shipment_for_item(self, item: str, order_quantity: int):
+        """Processes a shipment for order_quantity amount of an item
 
         Parameters:
-            item (str): Item to be shipped.
-            order_quantity (int): Amount of item to be shipped.
+            item: Item to be shipped.
+            order_quantity: Amount of item to be shipped.
 
         """
-        running_shipments = []
         quantity_left = order_quantity
+        total_amount = 0
+        found_match = False
 
         for warehouse in self.__warehouse_list:
             quantity_in_warehouse = warehouse.get_quantity(item)
-
             if quantity_in_warehouse >= order_quantity:
-                # Single warehouse can ship all of the item quantity
+                # Single warehouse can ship all of the item
                 warehouse.process_item_shipment(item, order_quantity)
-                return True
-            elif quantity_left > 0 and quantity_in_warehouse > 0:
-                # Add partial shipments to running_shipments
-                shipping_quantity = min(quantity_in_warehouse, quantity_left)
-                quantity_left -= shipping_quantity
-                running_shipments.append((warehouse, shipping_quantity))
+                found_match = True
+                break
+            # Keep track of total item amount across warehouses
+            total_amount += quantity_in_warehouse
 
-        if quantity_left > 0:
-            # Unable to complete the order
-            return False
-        for warehouse_shipment_for_item in running_shipments:
-            warehouse, shipment_quantity = warehouse_shipment_for_item
-            warehouse.process_item_shipment(item, shipment_quantity)
-        return True
-
-    def __cancel_all_processed_shipments(self):
-        """Loop through each warehouses and cancel all processed shippments in it"""
-        for warehouse in self.__warehouse_list:
-            warehouse.cancel_processed_shipments()
-
-    def set_order(self, input_order: Inventory_Dist):
-        """Set order to the input_order"""
-        self.__order = input_order
+        if total_amount >= order_quantity and not found_match:
+            # Total quantity of item across warehouses is enough for a shipment
+            for warehouse in self.__warehouse_list:
+                quantity_in_warehouse = warehouse.get_quantity(item)
+                if quantity_in_warehouse > 0:
+                    shipping_quantity = min(quantity_in_warehouse,
+                                            quantity_left)
+                    quantity_left -= shipping_quantity
+                    warehouse.process_item_shipment(item, shipping_quantity)
+                if quantity_left <= 0:
+                    break
 
     def allocate_inventory(self) -> Shipment:
-        """Returns Shipment of optimally allocated inventory if possible 
+        """Returns Shipment of optimally allocated inventory if possible"""
 
-        Side Effects:
-            If shipment is not possible then all processed shipments in each 
-            warehouse in __warehouse_list is cancelled
-            If shipment is possible then inventory is reduced in each 
-            warehouse from which inventory was taken in __warehouse_list
-            and processed shipments are cleared and shipped
-
-        """
-        # Try to process all items in order into warehouse shipments
+        # Process all items in order into warehouse shipments
         for item, quantity in self.__order.items():
             if quantity == 0:
                 # Skip orders of 0
                 continue
-            elif not self.__can_process_shipment_for_item(item, quantity):
-                self.__cancel_all_processed_shipments()
-                return []
+            self.__process_shipment_for_item(item, quantity)
 
-        # All items successfully processed so shipment can be sent
+        # Combine warehouse shipments to fufill order
         shipment = []
         for warehouse in self.__warehouse_list:
             warehouse_shipment = warehouse.ship_order()
