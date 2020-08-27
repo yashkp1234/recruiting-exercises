@@ -20,7 +20,8 @@ Ran 26 tests in 0.001s
 OK
 ```
 
-For custom test cases you may wish to add, just simply add them into test\test_inventory_allocator.py file by following format of other test cases with one example listed blow
+For custom test cases you may wish to add, just simply add them into test\test_inventory_allocator.py file.<br/>
+Format the test case similar to the one below.
 
 ```python
     def test_exact_match_with_single_warehouse(self):
