@@ -6,8 +6,7 @@ class InventoryAllocator(object):
     """Optimally create shipments of inventory to complete orders
 
     Attributes:
-        __order (Inventory_Dist): The order to be completed.
-        __warhouse_list (List[Warhouse]): List of all warehouse objects.
+        __warhouse_list (List[Warhouse]): List of all Warehouse objects.
 
     """
 
