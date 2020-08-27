@@ -3,7 +3,8 @@ from copy import deepcopy
 
 
 class Warehouse(object):
-    """A warehouse to store inventory, process shipments and ship them.
+    """
+    A warehouse to store inventory, process shipments and ship them.
 
     Attributes:
         __name (str): Name of the warehouse.
@@ -13,7 +14,8 @@ class Warehouse(object):
     """
 
     def __init__(self, name: str, inventory: Inventory_Dist):
-        """The constructor for Warehouse class.
+        """
+        The constructor for Warehouse class.
 
         Parameters:
            name (str): The name given to warehouse.
@@ -25,7 +27,7 @@ class Warehouse(object):
         self.__to_be_shipped = {}
 
     def __is_item_in_stock(self, item: str) -> bool:
-        """ Return True if item is in inventory, False otherwise"""
+        """Return True if item is in inventory, False otherwise"""
         return item in self.__inventory and self.__inventory[item] > 0
 
     def get_quantity(self, item: str) -> int:
@@ -35,7 +37,8 @@ class Warehouse(object):
         return self.__inventory[item]
 
     def process_item_shipment(self, item: str, quantity: int):
-        """Create a shipment for an item using warehouse inventory
+        """
+        Create a shipment for an item using warehouse inventory
 
         Parameters:
             item (str): Item to be ordered.

@@ -20,7 +20,7 @@ Ran 26 tests in 0.001s
 OK
 ```
 
-For custom test cases you may wish to add, just simply add them into test\test_inventory_allocator.py file.<br/>
+For custom test cases you may wish to add, put them into test\test_inventory_allocator.py file.<br/>
 Format the test case similar to the one below.
 
 ```python
@@ -41,14 +41,15 @@ Format the test case similar to the one below.
     - This should result in [{test: {pear: 1}}] not [], as although the apple shipment cannot be fufilled, the pears can
   - Reasoning
     - In an email sent to technical recruiter, she clarified that this was the case
-- It is always cheaper to allocate the shipment of an item to the n cheapest warehouses than it is to allocate to m warehouses who have higher costs, where m < n
+- It is always cheaper to allocate the shipment of an item to the n cheapest warehouses than it is to allocate to m warehouses which all have higher costs, where m < n
   - Example
     - Consider warehouses with costs of [1, 2, 3, 4, 5, 6, 7], the index of the warehouse is its name and cost, and we have an order of 5 apples
     - Warehouses 1 to 5 combined have 5 apples and would cost 1 + 2 + 3 + 4 + 5 = 15 to ship from
-    - Warehouses 6 to 7 also have 5 apples combined and would cost of 6 + 7 = 13 to ship from which is cheaper
+    - Warehouses 6 to 7 also have 5 apples combined and would cost of 6 + 7 = 13 to ship from, which means using the m expensive warehouses would be cheaper
+    - However if we change our groupings where we have Warehouses 1 to 4 (cost is 10) and Warehouse 5 to 6 (cost is 11) then optimal shipment would use the n cheaper warehouses
     - Thus without this assumption we would have to consider cases like these
   - Reasoning:
-    - Without knowing the actual costs of using each warehouse it would be impossible to be able to optimally allocate without making an assumption similar to this
+    - Without knowing the actual costs of using each warehouse it would be impossible to optimally allocate inventory without making an assumption similar to this
 
 ## Implementation
 
@@ -56,8 +57,8 @@ Let W represent the number of warehouses, let I represent the number of items in
 
 1. Create list of Warehouse objects given the second input which is a list of dictionaries with names and inventory distributions representing warehouses
    - Time: O(W)
-2. Loop through order and for each item call process_shipment_for_item
-   - process_shipment_for_item loops through the warehouses once to see if one warehouse and cover the item order and creates it, if it cannot and it is possible to create a distributed shipment across warehouses then it loops through warehouses again to create the distributed shipment
+2. Loop through order and for each item and try to process a shipment for the order
+   - when processing a shipment first loop through the warehouses once to see if one warehouse can cover the item order and creates a shipment if so, otherwise if it is possible to create a distributed shipment across warehouses then loop through warehouses again to create the distributed shipment
      - Time: O(2W)
    - Total Time: O(I) \* O(2W) = O(2IW)
 3. Loop through all warehouses, output any shipments they have processed and append them to a list representing final shipment of the order
