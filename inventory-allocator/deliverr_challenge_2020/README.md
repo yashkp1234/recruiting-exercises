@@ -41,7 +41,7 @@ Format the test case similar to the one below.
     - This should result in [{test: {pear: 1}}] not [], as although the apple shipment cannot be fulfilled, the pears can
   - Reasoning
     - In an email sent to technical recruiter, she clarified that this was the case
-- Let n, m, k be integers where n > k > m. Consider a list of n warehouses, where there is k cheapest warehouses and m more expensive warehouses. I assume that it is always cheaper to allocate a shipment of an item to the k cheapest warehouses rather than the m expensive warehouses
+- Let n, m, k be integers where n > k > m. Consider a list of n warehouses, where there are k cheapest warehouses and m more expensive warehouses. I assume that it is always cheaper to allocate a shipment of an item to the k cheapest warehouses rather than the m expensive warehouses if more than one warehouse is needed for the shipment
   - Example
     - Consider warehouses with costs of [1, 2, 3, 4, 5, 6, 7], the index of the warehouse is its name and cost, and we have an order of 5 apples
     - Warehouses 1 to 5 combined have 5 apples and would cost 1 + 2 + 3 + 4 + 5 = 15 to ship from
