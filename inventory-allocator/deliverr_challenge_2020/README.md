@@ -15,7 +15,7 @@ To run the unit tests run the following, with expected results below
 $ python -m unittests
 .......................
 ----------------------------------------------------------------------
-Ran 26 tests in 0.001s
+Ran 27 tests in 0.001s
 
 OK
 ```
