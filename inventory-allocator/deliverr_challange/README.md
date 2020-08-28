@@ -58,7 +58,7 @@ Let W represent the number of warehouses, let I represent the number of items in
 1. Create list of Warehouse objects given the second input which is a list of dictionaries with names and inventory distributions representing warehouses
    - Time: O(W)
 2. Loop through order and for each item and quantity
-   - Loop through warehouses once to check if it required multiple warehouses to complete a shipment for that item quantity, if it is required then loop through warehouses again to create the shipments across warehouses for the item
+   - Loop through warehouses once to check if item requires multiple warehouses to complete a shipment and if it is possible to do so.<br/> If needed then loop through warehouses again to create the shipments across warehouses for the item, otherwise we either already processed an order using only one warehouse or it is not possible to ship the item
      - Time: O(2W)
    - Total Time: O(I) \* O(2W) = O(2IW)
 3. Loop through all warehouses, output any shipments they have processed and append them to a list representing final shipment of the order
