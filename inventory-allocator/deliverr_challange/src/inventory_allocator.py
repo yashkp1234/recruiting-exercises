@@ -12,7 +12,6 @@ class InventoryAllocator(object):
     """
 
     def __init__(self):
-        """The constructor for InventoryAllocator class."""
         self.__warehouse_list = []
 
     def __set_warehouse_list(self, warehouse_dict_list: Input_Warehouse_List):
@@ -35,7 +34,7 @@ class InventoryAllocator(object):
 
         Side Effects:
             If a single warehouse can ship all of the item then it processes
-            a shipment for that warehouse
+            a shipment for item from that warehouse and returns True
 
         Parameters:
             item: Item to be shipped.
@@ -55,9 +54,10 @@ class InventoryAllocator(object):
 
         return total_amount >= order_quantity
 
-    def __process_shipment_for_item(self, item: str, order_quantity: int):
+    def __process_item_shipments_across_warehouses(self, item: str,
+                                                   order_quantity: int):
         """
-        Processes a shipment for order_quantity amount of an item
+        Process item shipments across warehouses for order_quantity amount
 
         Parameters:
             item: Item to be shipped.
@@ -65,7 +65,6 @@ class InventoryAllocator(object):
 
         """
         quantity_left = order_quantity
-        total_amount = 0
 
         # Greedily take inventory from warehouses until shipment is complete
         for warehouse in self.__warehouse_list:
@@ -96,7 +95,7 @@ class InventoryAllocator(object):
                 # Skip orders of 0
                 continue
             if self.__are_multiple_warehouses_required(item, quantity):
-                self.__process_shipment_for_item(item, quantity)
+                self.__process_item_shipments_across_warehouses(item, quantity)
 
         # Combine warehouse shipments to fufill order
         shipment = []
