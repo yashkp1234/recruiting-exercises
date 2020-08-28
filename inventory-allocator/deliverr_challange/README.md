@@ -35,13 +35,13 @@ Format the test case similar to the one below.
 
 ## Assumptions Made
 
-- If an item from an order cannot be fufilled, then the rest of the order should still completed as much as possible
+- If an item from an order cannot be fufilled, then I assume that the rest of the order should still completed as much as possible
   - Example
     - Given an inventory of {apple: 2, pear: 1} and warehouse list of [{name: test, inventory: {pear: 1}}]
     - This should result in [{test: {pear: 1}}] not [], as although the apple shipment cannot be fufilled, the pears can
   - Reasoning
     - In an email sent to technical recruiter, she clarified that this was the case
-- Let n,m,k be integers where n < k < m. Consider a list of n warehouses, where there is k cheapest warehouses and m more expensive warehouses, but k > m. I assume that it is always cheaper to allocate a shipment of an item to the k cheapest warehouses rather than the m expensive warehouses
+- Let n, m, k be integers where n > k > m. Consider a list of n warehouses, where there is k cheapest warehouses and m more expensive warehouses. I assume that it is always cheaper to allocate a shipment of an item to the k cheapest warehouses rather than the m expensive warehouses
   - Example
     - Consider warehouses with costs of [1, 2, 3, 4, 5, 6, 7], the index of the warehouse is its name and cost, and we have an order of 5 apples
     - Warehouses 1 to 5 combined have 5 apples and would cost 1 + 2 + 3 + 4 + 5 = 15 to ship from
