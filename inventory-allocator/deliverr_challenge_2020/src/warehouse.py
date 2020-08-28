@@ -23,7 +23,7 @@ class Warehouse(object):
         return item in self.__inventory and self.__inventory[item] > 0
 
     def get_quantity(self, item: str) -> int:
-        """Returns an int which is quantity of item in inventory currently"""
+        """Returns quantity of item in inventory currently"""
         if not self.__is_item_in_stock(item):
             return 0
         return self.__inventory[item]
@@ -42,7 +42,7 @@ class Warehouse(object):
             self.__inventory[item] -= self.__to_be_shipped[item]
 
     def ship_processed_shipments(self) -> Warehouse_Shipment:
-        """Return Warhouse_Shipment from inventory to be shipped"""
+        """Return a Warhouse_Shipment from inventory to be shipped"""
         if not self.__to_be_shipped:
             return {}
         else:
