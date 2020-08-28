@@ -34,7 +34,7 @@ class InventoryAllocator(object):
 
         Side Effects:
             If a single warehouse can ship all of the item then it processes
-            a shipment for item from that warehouse and returns True
+            a shipment for item from that warehouse and returns False
 
         Parameters:
             item: Item to be shipped.
@@ -95,6 +95,7 @@ class InventoryAllocator(object):
                 # Skip orders of 0
                 continue
             if self.__are_multiple_warehouses_required(item, quantity):
+                # No warehouse can fully complete shipment and distributed shipment is possible
                 self.__process_item_shipments_across_warehouses(item, quantity)
 
         # Combine warehouse shipments to fufill order
