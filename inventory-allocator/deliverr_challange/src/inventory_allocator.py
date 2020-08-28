@@ -19,7 +19,7 @@ class InventoryAllocator(object):
         Creates a Warehouse object for each Warhouse_Dict in the list
 
         Parameters:
-           warhouse_dict_list: A list of warehouses and their inventories
+           warhouse_dict_list: A list of dicts mapping warehouse names to inventories
 
         """
         for inp_warehouse in warehouse_dict_list:
@@ -100,7 +100,7 @@ class InventoryAllocator(object):
         # Combine warehouse shipments to fufill order
         shipment = []
         for warehouse in self.__warehouse_list:
-            warehouse_shipment = warehouse.ship_order()
+            warehouse_shipment = warehouse.ship_processed_shipments()
             if warehouse_shipment:
                 shipment.append(warehouse_shipment)
         return shipment

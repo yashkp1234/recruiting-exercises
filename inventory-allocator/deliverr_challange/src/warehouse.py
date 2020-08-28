@@ -14,14 +14,6 @@ class Warehouse(object):
     """
 
     def __init__(self, name: str, inventory: Inventory_Dist):
-        """
-        The constructor for Warehouse class.
-
-        Parameters:
-           name (str): The name given to warehouse.
-           inventory (int): The inventory given to warehouse.
-
-        """
         self.__name = name
         self.__inventory = inventory
         self.__to_be_shipped = {}
@@ -41,16 +33,16 @@ class Warehouse(object):
         Create a shipment for an item using warehouse inventory
 
         Parameters:
-            item (str): Item to be ordered.
-            quantity (int): Amount of item to be ordered.
+            item: Item to be ordered.
+            quantity: Amount of item to be ordered.
 
         """
         if quantity > 0 and self.__is_item_in_stock(item):
             self.__to_be_shipped[item] = min(self.get_quantity(item), quantity)
             self.__inventory[item] -= self.__to_be_shipped[item]
 
-    def ship_order(self) -> Warehouse_Shipment:
-        """Return created warhouse shipment, from inventory to be shipped"""
+    def ship_processed_shipments(self) -> Warehouse_Shipment:
+        """Return Warhouse_Shipment from inventory to be shipped"""
         if not self.__to_be_shipped:
             return {}
         else:
