@@ -3,7 +3,7 @@
 ## Testing
 
 The tests must be run from the deliverr_challenge folder.
-To get there from root directory do the following
+To get there from root directory (/recruiting-exercises) do the following
 
 ```sh
 $ cd inventory-allocator/deliverr_challenge
