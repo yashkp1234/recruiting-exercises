@@ -69,5 +69,4 @@ Total Time = O(W) + O(2WI) + O(W) = O(2WI + 2W) = O(WI)<br/>
 
 ## Design Questions
 
-- Why use a warehouse class and create warehouse objects when it takes an O(W) time
-  -
+- ## Why use a warehouse class and create warehouse objects when it takes an O(W) time
