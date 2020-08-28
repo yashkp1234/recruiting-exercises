@@ -67,6 +67,8 @@ Let W represent the number of warehouses, let I represent the number of items in
 Total Time = O(W) + O(2WI) + O(W) = O(2WI + 2W) = O(WI)<br/>
 **Thus, the overall implementation time is O(WI)**
 
-## Design Questions
+## Design Decisions
 
-- ## Why use a warehouse class and create warehouse objects when it takes an O(W) time
+- Why use a warehouse class and create warehouse objects when it takes an extra O(W) time to do so?
+  - I interpreted this challenge as more of a design challenge than optimization. In reality there’s a lot of short cuts I could have taken such as writing the inventory allocation as one class, or using the warehouse list as given to avoid the extra O(W) of creating warehouses. However, I didn't because I took the perspective that this is a real-world problem and the way I solve this problem should be correct and efficient, but also well designed for scalability and to allow for future improvements and additions while being easily maintainable.
+  - In order to achieve this I tried to follow OOP principles by creating the Warehouse class, and making “private” variables and methods (nothing is really private in python but \_\_ is convention for it). I believe the warehouse class helps modularize my code making it easier to find errors, have better readability, and helps it be scalable. Specifically, adding new features such as being able to use the same warehouse list to complete multiple orders could easily be implemented currently the way my project is structured. In fact, it was implemented before in my first commit before I removed it.
