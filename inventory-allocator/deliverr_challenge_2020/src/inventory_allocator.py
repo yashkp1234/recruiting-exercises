@@ -14,7 +14,7 @@ class InventoryAllocator(object):
     def __init__(self):
         self.__warehouse_list = []
 
-    def __set_warehouse_list(self, warehouse_dict_list: Input_Warehouse_List):
+    def __create_warehouse_list(self, warehouse_dict_list: Input_Warehouse_List):
         """
         Creates a Warehouse object for each Warhouse_Dict in the list
 
@@ -84,10 +84,10 @@ class InventoryAllocator(object):
 
         Parameters:
             order: The order to be completed.
-            warhouse_dicts: A list of warehouses and their inventories
+            warhouse_dicts: A list of dicts mapping warehouse names and to inventories
 
         """
-        self.__set_warehouse_list(warehouse_dicts)
+        self.__create_warehouse_list(warehouse_dicts)
 
         # Process all items in order into warehouse shipments
         for item, quantity in order.items():
