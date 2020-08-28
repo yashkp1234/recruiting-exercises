@@ -49,7 +49,7 @@ Format the test case similar to the one below.
     - However if we change our groupings where we have Warehouses 1 to 4 (cost is 10) and Warehouses 5 to 6 (cost is 11) then optimal shipment would use the k cheaper warehouses
     - Thus we need to know the cost of using an individual warehouse to optimally allocate a shipment across warehouses
   - Reasoning:
-    - Without knowing the actual costs of using each warehouse it would be impossible to optimally allocate inventory without making an assumption similar to this
+    - Since we do not know the actual costs of using each warehouse it is impossible to optimally allocate inventory without making an assumption similar to this
 
 ## Implementation
 
@@ -58,7 +58,7 @@ Let W represent the number of warehouses, let I represent the number of items in
 1. Create list of Warehouse objects given the second input which is a list of dictionaries with names and inventory distributions representing warehouses
    - Time: O(W)
 2. Loop through order and for each item and quantity
-   - Loop through warehouses once to check if item requires multiple warehouses to complete a shipment and if it is possible to do so.<br/> If needed then loop through warehouses again to create the shipments across warehouses for the item, otherwise we either already processed an order using only one warehouse or it is not possible to ship the item
+   - Loop through warehouses once to check if item requires multiple warehouses to complete a shipment and if it is possible to do so.<br/> If needed then loop through warehouses again to create the shipments across warehouses for the item, otherwise we either already processed a shipment using only one warehouse or it is not possible to ship the item
      - Time: O(2W)
    - Total Time: O(I) \* O(2W) = O(2IW)
 3. Loop through all warehouses, output any shipments they have processed and append them to a list representing final shipment of the order
