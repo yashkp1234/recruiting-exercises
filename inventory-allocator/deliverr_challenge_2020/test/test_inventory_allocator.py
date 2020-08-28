@@ -184,6 +184,14 @@ class TestInventoryAllocator(unittest.TestCase):
         self.assertEqual(allocation, [])
 
     def test_item_missing(self):
+        order = {"chaps": 1}
+        warehouses = [{"name": "owd", "inventory": {"apple": 1}}]
+
+        allocation = InventoryAllocator().allocate_inventory(order, warehouses)
+        expected_result = []
+        self.assertEqual(allocation, expected_result)
+
+    def test_partially_fulfilled_order(self):
         order = {"apple": 1, "chaps": 1}
         warehouses = [{"name": "owd", "inventory": {"apple": 1}}]
 
